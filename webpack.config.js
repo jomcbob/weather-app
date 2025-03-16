@@ -1,4 +1,5 @@
-const path = require("path"); // Add this line at the top
+// webpack.config.js
+const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -34,5 +35,4 @@ module.exports = {
       },
     ],
   },
-  target: "web", // Add this line to target the browser environment
 };
