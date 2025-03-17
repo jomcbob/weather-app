@@ -1,10 +1,28 @@
 let fetchCity = (city, refresh) => {
+    document.getElementById('loadingBarContainer').style.display = 'block'
+
+    let loadingProgress = 0;
+
+    const loadingInterval = setInterval(() => {
+        if (loadingProgress < 100) {
+            loadingProgress += 10
+            document.getElementById('loadingBar').style.width = `${loadingProgress}%`
+        }
+    }, 100)
+
     fetch(`https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=us&key=Y9ZFF9CEJ475LE5UTF9JWAD4Y&contentType=json`, { mode: 'cors' })
         .then(function (response) {
-            return response.json();
+            return response.json()
         })
         .then(function (response) {
-            console.log(response)
+            clearInterval(loadingInterval)
+            document.getElementById('loadingBar').style.width = '100%'
+
+            setTimeout(() => {
+                document.getElementById('loadingBarContainer').style.display = 'none';
+            }, 500)
+
+            console.log(response);
             const data = {
                 address: response.address,
                 conditions: response.currentConditions.conditions,
@@ -21,12 +39,17 @@ let fetchCity = (city, refresh) => {
                     }
                 })
             }
-
-            refresh(data)
+            
+            refresh(data);
         })
         .catch(error => {
-            alert('please enter a valid city', error)
+            clearInterval(loadingInterval);
+            document.getElementById('loadingBar').style.width = '10%'
+            document.getElementById('loadingBarContainer').style.display = 'none'
+
+            alert('Please enter a valid city', error)
         })
 }
+
 
 export { fetchCity }

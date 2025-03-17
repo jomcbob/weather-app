@@ -1,8 +1,3 @@
-import cloudy from './imgs/cloudy.jpg'
-import sunny from './imgs/sunny.jpg'
-import rainy from './imgs/rainy.jpg'
-import snowy from './imgs/snowy.jpg'
-
 let showWeatherData = document.querySelector('.showWeatherData')
 let showForcast = document.querySelector('.nextTenDays')
 
@@ -49,47 +44,46 @@ let giveTenDayForecast = (forecast) => {
                     <p>Min temp: ${forecast.days[i].tempmin}°</p>
                 `
             }
-            isExpanded = !isExpanded;
+            isExpanded = !isExpanded
         })
     }
 }
 
 function formatDate(dateString) {
-    // Create a Date object
     const date = new Date(dateString);
-
-    // Adjust the date to the local timezone if needed
     const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
-
-    // Format the date to your desired format
     const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     return localDate.toLocaleDateString('en-US', options);
 }
 
-
-function updateBackgroundImage(data) {
-    const condition = data.conditions.toLowerCase()
+async function updateBackgroundImage(data) {
+    const condition = data.conditions.toLowerCase();
+    
+    let imagePath
 
     if (condition.includes('clear')) {
-        document.body.style.backgroundImage = `url(${sunny})`;
+        imagePath = 'sunny'
     } else if (condition.includes('rain') || condition.includes('showers') || condition.includes('thunder')) {
-        document.body.style.backgroundImage = `url(${rainy})`;
+        imagePath = 'rainy'
     } else if (condition.includes('snow')) {
-        document.body.style.backgroundImage = `url(${snowy})`;
+        imagePath = 'snowy'
     } else if (condition.includes('cloud') || condition.includes('fog') || condition.includes('hail') || condition.includes('sleet') || condition.includes('wind')) {
-        document.body.style.backgroundImage = `url(${cloudy})`
+        imagePath = 'cloudy'
     }
 
-    document.body.style.backgroundSize = 'cover';
-    document.body.style.backgroundPosition = 'center';
-    document.body.style.height = '100vh';
-    document.body.style.margin = '0';
-    document.body.style.backgroundAttachment = 'fixed';
+    try {
+        if (imagePath) {
+            const image = await import(`./imgs/${imagePath}.jpg`)
+            document.body.style.backgroundImage = `url(${image.default})`
+        }
+
+        document.body.style.backgroundSize = 'cover'
+        document.body.style.backgroundPosition = 'center'
+        document.body.style.height = '100vh'
+        document.body.style.backgroundAttachment = 'fixed'
+    } catch (error) {
+        alert('Error loading background image:', error)
+    }
 }
 
 export { refresh }
-
-// Photo by <a href="https://unsplash.com/@derek_pdx?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Derek Sears</a> on <a href="https://unsplash.com/photos/green-grass-field-under-blue-sky-during-daytime-Uezjb0-RuGk?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-// Photo by <a href="https://unsplash.com/@chuttersnap?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">CHUTTERSNAP</a> on <a href="https://unsplash.com/photos/white-and-teal-sky-PLe8QlV67kg?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-// Photo by <a href="https://unsplash.com/@berkinuregen?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Berkin Üregen</a> on <a href="https://unsplash.com/photos/water-droplets-on-glass-panel-eehRmieZJvY?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
-// Photo by <a href="https://unsplash.com/@clickandlearnphotography?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Click and Learn Photography</a> on <a href="https://unsplash.com/photos/white-and-brown-tree-illustation-NGB9oBtOUM8?utm_content=creditCopyText&utm_medium=referral&utm_source=unsplash">Unsplash</a>
