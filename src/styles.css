@@ -4,10 +4,11 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
+  /* background-image: url(./imgs/sunny.jpg); */
 }
 
 header {
-  background: linear-gradient(25deg, rgba(255, 255, 255, 0.5), rgba(181, 133, 133, 0.5));
+  background: linear-gradient(25deg, rgba(255, 255, 255, 0.5), rgba(36, 36, 36, 0.5));
   display: flex;
   padding: 10px;
   justify-content: space-between;
@@ -53,7 +54,7 @@ input {
 
 .data {
   padding: 30px 15px;
-  background: linear-gradient(25deg, rgba(255, 255, 255, 0.5), rgba(181, 133, 133, 0.5));
+  background: linear-gradient(25deg, rgba(255, 255, 255, 0.5), rgba(36, 36, 36, 0.5));
   border-radius: 20px;
 }
 

@@ -57,33 +57,32 @@ function formatDate(dateString) {
 }
 
 async function updateBackgroundImage(data) {
-    const condition = data.conditions.toLowerCase();
+    const condition = data.conditions.toLowerCase()
     
-    let imagePath
+    let imagePath = 'cloudy'
 
-    if (condition.includes('clear')) {
+    if (condition.includes('clear') || condition.includes('sunny') || condition.includes('fair')) {
         imagePath = 'sunny'
-    } else if (condition.includes('rain') || condition.includes('showers') || condition.includes('thunder')) {
+    } else if (condition.includes('rain') || condition.includes('showers') || condition.includes('thunder') || condition.includes('drizzle')) {
         imagePath = 'rainy'
     } else if (condition.includes('snow')) {
         imagePath = 'snowy'
-    } else if (condition.includes('cloud') || condition.includes('fog') || condition.includes('hail') || condition.includes('sleet') || condition.includes('wind')) {
+    } else if (condition.includes('cloud') || condition.includes('fog') || condition.includes('hail') || condition.includes('sleet') || condition.includes('overcast') || condition.includes('partly cloudy') || condition.includes('wind') || condition.includes('haze')) {
         imagePath = 'cloudy'
     }
 
     try {
-        if (imagePath) {
-            const image = await import(`./imgs/${imagePath}.jpg`)
-            document.body.style.backgroundImage = `url(${image.default})`
-        }
-
+        const image = await import(`./imgs/${imagePath}.jpg`)
+        document.body.style.backgroundImage = `url(${image.default})`
         document.body.style.backgroundSize = 'cover'
         document.body.style.backgroundPosition = 'center'
         document.body.style.height = '100vh'
         document.body.style.backgroundAttachment = 'fixed'
     } catch (error) {
-        alert('Error loading background image:', error)
+        console.error('Error loading background image:', error)
+        document.body.style.backgroundImage = `url(./imgs/default.jpg)`
     }
 }
+
 
 export { refresh }
