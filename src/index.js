@@ -9,5 +9,11 @@ fetchCityButton.addEventListener('click', () => {
     fetchCity(cityInput.value, refresh)
 })
 
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+        fetchCity(cityInput.value, refresh)
+    }
+  })
+
 fetchCity("shelley id", refresh)
 

@@ -4,7 +4,7 @@ import rainy from './imgs/rainy.jpg'
 import snowy from './imgs/snowy.jpg'
 
 let showWeatherData = document.querySelector('.showWeatherData')
-let showForcast = document.querySelector('.sideBar')
+let showForcast = document.querySelector('.nextTenDays')
 
 const refresh = (data) => {
     giveData(data)
@@ -23,7 +23,7 @@ let giveData = (validData) => {
     </div>
     <div class='boxForWidgets'>
          <div class='wind widget'>💨 ${validData.windspeed} mph</div>
-        <div class='humidity widget'>Humidty: ${validData.humidity}</div>
+        <div class='humidity widget'>Humidity: ${validData.humidity}</div>
     </div>
     `
 }

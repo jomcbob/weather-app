@@ -4,7 +4,7 @@ let fetchCity = (city, refresh) => {
             return response.json();
         })
         .then(function (response) {
-
+            console.log(response)
             const data = {
                 address: response.address,
                 conditions: response.currentConditions.conditions,
@@ -25,7 +25,7 @@ let fetchCity = (city, refresh) => {
             refresh(data)
         })
         .catch(error => {
-            console.log(error)
+            alert('please enter a valid city', error)
         })
 }
 
