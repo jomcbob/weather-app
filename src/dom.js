@@ -1,3 +1,6 @@
+import { changeTemperature, changeUnitOfLength } from "./data"
+import { toggle } from "./index"
+
 let showWeatherData = document.querySelector('.showWeatherData')
 let showForcast = document.querySelector('.nextTenDays')
 
@@ -13,13 +16,13 @@ let giveTodaysData = (validData) => {
         <p class='city'>City: ${validData.address.toUpperCase()}</p>
         <p>Overview: ${validData.description}</p>
         <p>Conditions: ${validData.conditions}</p>
-        <p>Max temp: ${validData.days[0].tempmax}</p>
-        <p>Min temp: ${validData.days[0].tempmin}</p>
-        <p>Temp: ${validData.temp}</p>
+        <p>Max temp: ${changeTemperature(validData.days[0].tempmax, !toggle)}</p>
+        <p>Min temp: ${changeTemperature(validData.days[0].tempmin, !toggle)}</p>
+        <p>Temp: ${ changeTemperature(validData.temp, !toggle)}</p>
     </div>
     <div class='boxForWidgets'>
-         <div class='wind widget'>💨 ${validData.windspeed} mph</div>
-        <div class='humidity widget'>Humidity: ${validData.humidity}</div>
+         <div class='wind widget'>💨 ${changeUnitOfLength(validData.windspeed, !toggle)}</div>
+        <div class='humidity widget'>Humidity: ${validData.humidity}%</div>
     </div>
     `
 }
@@ -41,8 +44,8 @@ let giveTenDayForecast = (forecast) => {
             } else {
                 dayForcast.innerHTML = `
                     <p>${forecast.days[i].description}</p>
-                    <p>Max temp: ${forecast.days[i].tempmax}°</p>
-                    <p>Min temp: ${forecast.days[i].tempmin}°</p>
+                    <p>Max temp: ${changeTemperature(forecast.days[i].tempmax, !toggle)}</p>
+                    <p>Min temp: ${changeTemperature(forecast.days[i].tempmin, !toggle)}°</p>
                 `
             }
             isExpanded = !isExpanded

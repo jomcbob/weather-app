@@ -1,4 +1,5 @@
-let fetchCity = (city, refresh) => {
+let moreData;
+const fetchCity = (city, refresh) => {
     document.getElementById('loadingBarContainer').style.display = 'block'
 
     let loadingProgress = 0;
@@ -41,6 +42,7 @@ let fetchCity = (city, refresh) => {
             }
             
             refresh(data);
+            moreData = data
         })
         .catch(error => {
             clearInterval(loadingInterval);
@@ -51,5 +53,22 @@ let fetchCity = (city, refresh) => {
         })
 }
 
+const changeTemperature = (temperature, isCelsius) => {
+    if (isCelsius) {
+      return temperature + ' ℉'
+    } else {
+      return  Math.round((temperature - 32) * 5 / 9 * 100) / 100 + ' ℃'
+    }
+}
 
-export { fetchCity }
+const changeUnitOfLength = (distance, isMiles) => {
+    if (isMiles) {
+      return distance + ' mph';
+    } else {
+      return Math.round(distance * 1.60934 * 100) / 100 + ' km/h';
+    }
+  }
+
+
+
+export { fetchCity, changeTemperature, changeUnitOfLength, moreData }

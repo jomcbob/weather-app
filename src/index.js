@@ -1,5 +1,5 @@
 import "./styles.css";
-import { fetchCity } from './data'
+import { fetchCity, moreData } from './data'
 import { refresh } from './dom'
 
 let cityInput = document.querySelector('#cityInput')
@@ -7,9 +7,22 @@ let fetchCityButton = document.querySelector('.fetchCityButton')
 let credit = document.querySelector('.credit')
 let appendCredit = document.querySelector('.appendCredit')
 let deleteInputValue = document.querySelector('.deleteInputValue')
+let switchValue = document.querySelector('.slider')
+let toggle = false
+let toggleValue = document.querySelector('.toggleValue')
 
 fetchCityButton.addEventListener('click', () => {
     fetchCity(cityInput.value, refresh)
+})
+
+switchValue.addEventListener('click', () => {
+    toggle = !toggle
+    if (toggle){
+        toggleValue.textContent = '℃'
+    } else {
+        toggleValue.textContent = '℉'
+    }
+    refresh(moreData)
 })
 
 deleteInputValue.addEventListener('click', () => {
@@ -31,8 +44,7 @@ function updateClock() {
     });
     document.getElementById('clock').textContent = timeString;
   }
-  
-  setInterval(updateClock, 1000);
+setInterval(updateClock, 1000);
 
 let showCredit = true
 let divs = document.createElement('div')
@@ -58,4 +70,6 @@ divs.classList.add('divs')
 })
 
 fetchCity("London", refresh)
+
+export { toggle }
 
