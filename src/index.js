@@ -1,5 +1,5 @@
 import "./styles.css";
-import { fetchCity, moreData } from './data'
+import { fetchCity, moreData, calculateTimeDifference } from './data'
 import { refresh } from './dom'
 
 let cityInput = document.querySelector('#cityInput')
@@ -35,35 +35,67 @@ document.addEventListener('keydown', function(event) {
     }
 })
 
-let rotation = new Date().getSeconds() * 6;
-rotation += 180
-let setTime = () => {
-    rotation = new Date().getSeconds() * 6;
-    rotation += 180
+let localRotation = new Date().getSeconds() * 6 + 180
+let clockInterval
+
+// for the users time
+setInterval(function() {
+    localRotation += 6
+    let clock = document.querySelector('.hand')
+    clock.style.transform = 'rotate(' + localRotation + 'deg)'
+
+    const date = new Date();
+    const timeString = date.toLocaleTimeString(navigator.language, {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+    })
+
+    const timeElement = document.querySelector('.time')
+    timeElement.textContent = timeString
+    if (localRotation > 3600) {
+        localRotation = new Date().getSeconds() * 6 + 180
+    }
+}, 1000)
+
+// for the searched time
+function startClock(timeZone) {
+    let locationRotation = new Date().getSeconds() * 6 + 180
+    if (clockInterval) {
+        clearInterval(clockInterval)
+    }
+
+    clockInterval = setInterval(function () {
+        locationRotation += 6
+        let clock = document.querySelector('.hand2')
+        clock.style.transform = 'rotate(' + locationRotation + 'deg)'
+
+        const date = new Date()
+        const options = {
+            timeZone: timeZone,
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+        }
+
+        const timeString = new Intl.DateTimeFormat(navigator.language, options).format(date)
+        const timeElement = document.querySelector('.time2')
+        timeElement.textContent = timeString
+    }, 1000)
 }
 
-setInterval(function() {
-  rotation += 6;
-    console.log(rotation)
-  let clock = document.querySelector('#hand');
-
-  clock.style.transform = 'rotate(' + rotation + 'deg)';
-
-  const date = new Date();
-  let timeString = date.toLocaleTimeString(navigator.language, {
-    hour: "2-digit",
-    minute: "2-digit",
-    second: "2-digit",
-  });
-  
-  const timeElement = document.getElementById('time');
-  timeElement.textContent = timeString;
-
-  if (rotation > 3000){
-    setTime()
-  }
-}, 1000)
-  
+function displayTimeDifference(zone) {
+    const timeZone = zone
+    const { hours, minutes } = calculateTimeDifference(timeZone)
+    const differenceElement = document.getElementById('timeDifference')
+    differenceElement.innerHTML = `
+    <div>
+        <div>Time Difference</div>
+        <div>${hours} hours,</div>
+        <div>${minutes} minutes</div>
+    </div>
+    `
+}
   
 
 let showCredit = true
@@ -91,5 +123,5 @@ divs.classList.add('divs')
 
 fetchCity("London", refresh)
 
-export { toggle }
+export { toggle, startClock, displayTimeDifference }
 

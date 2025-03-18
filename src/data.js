@@ -31,6 +31,7 @@ const fetchCity = (city, refresh) => {
                 humidity: response.currentConditions.humidity,
                 temp: response.days[0].temp,
                 windspeed: response.currentConditions.windspeed,
+                timezone: response.timezone,
                 hours: response.days[0].hours.map(hour => {
                     return {
                         icon: hour.icon,
@@ -61,20 +62,37 @@ const fetchCity = (city, refresh) => {
 
 const changeTemperature = (temperature, isCelsius) => {
     if (isCelsius) {
-      return temperature + ' ℉'
+        return temperature + ' ℉'
     } else {
-      return  Math.round((temperature - 32) * 5 / 9 * 100) / 100 + ' ℃'
+        return Math.round((temperature - 32) * 5 / 9 * 100) / 100 + ' ℃'
     }
 }
 
 const changeUnitOfLength = (distance, isMiles) => {
     if (isMiles) {
-      return distance + ' mph';
+        return distance + ' mph';
     } else {
-      return Math.round(distance * 1.60934 * 100) / 100 + ' km/h';
+        return Math.round(distance * 1.60934 * 100) / 100 + ' km/h';
     }
-  }
+}
+
+function calculateTimeDifference(timeZone) {
+    // Get the current local time
+    const localDate = new Date()
+    // Get the time in the specified target time zone as a UTC Date object
+    const targetDate = new Date().toLocaleString("en-US", { timeZone: timeZone })
+    const targetDateTime = new Date(targetDate)
+    // Calculate the difference in milliseconds
+    const diffInMillis =  targetDateTime.getTime() - localDate.getTime()
+    // Convert milliseconds to total minutes and round to the nearest minute
+    const diffInMinutes = Math.round(diffInMillis / 60000)
+    // Return the difference in hours and minutes 
+    const hours = Math.floor(diffInMinutes / 60)
+    const minutes = Math.abs(diffInMinutes % 60)
+
+    return { hours, minutes }
+}
 
 
 
-export { fetchCity, changeTemperature, changeUnitOfLength, moreData }
+export { fetchCity, changeTemperature, changeUnitOfLength, moreData, calculateTimeDifference }
