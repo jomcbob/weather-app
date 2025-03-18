@@ -35,16 +35,36 @@ document.addEventListener('keydown', function(event) {
     }
 })
 
-function updateClock() {
-    const date = new Date();
-    const timeString = date.toLocaleTimeString(navigator.language, {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-    });
-    document.getElementById('clock').textContent = timeString;
+let rotation = new Date().getSeconds() * 6;
+rotation += 180
+let setTime = () => {
+    rotation = new Date().getSeconds() * 6;
+    rotation += 180
+}
+
+setInterval(function() {
+  rotation += 6;
+    console.log(rotation)
+  let clock = document.querySelector('#hand');
+
+  clock.style.transform = 'rotate(' + rotation + 'deg)';
+
+  const date = new Date();
+  let timeString = date.toLocaleTimeString(navigator.language, {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+  
+  const timeElement = document.getElementById('time');
+  timeElement.textContent = timeString;
+
+  if (rotation > 3000){
+    setTime()
   }
-setInterval(updateClock, 1000);
+}, 1000)
+  
+  
 
 let showCredit = true
 let divs = document.createElement('div')
