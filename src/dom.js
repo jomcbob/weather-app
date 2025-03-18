@@ -1,8 +1,10 @@
 import { changeTemperature, changeUnitOfLength } from "./data"
 import { toggle } from "./index"
+import { getWeatherIconPath } from "./icons"
 
 let showWeatherData = document.querySelector('.showWeatherData')
 let showForcast = document.querySelector('.nextTenDays')
+// let showHourForecast = document.querySelector('.')
 
 const refresh = (data) => {
     giveTodaysData(data)
@@ -10,24 +12,64 @@ const refresh = (data) => {
     giveTenDayForecast(data)
 }
 
-let giveTodaysData = (validData) => {
-    showWeatherData.innerHTML = `
+const giveTodaysData = (validData) => {
+    showWeatherData.innerHTML = ''
+    let main = document.createElement('div')
+    let hour = document.createElement('div')
+    let widgets = document.createElement('div')
+    hour.classList.add('hour')
+
+    main.innerHTML = `
     <div class='data'> 
         <p class='city'>City: ${validData.address.toUpperCase()}</p>
         <p>Overview: ${validData.description}</p>
         <p>Conditions: ${validData.conditions}</p>
         <p>Max temp: ${changeTemperature(validData.days[0].tempmax, !toggle)}</p>
         <p>Min temp: ${changeTemperature(validData.days[0].tempmin, !toggle)}</p>
-        <p>Temp: ${ changeTemperature(validData.temp, !toggle)}</p>
-    </div>
-    <div class='boxForWidgets'>
-         <div class='wind widget'>💨 ${changeUnitOfLength(validData.windspeed, !toggle)}</div>
-        <div class='humidity widget'>Humidity: ${validData.humidity}%</div>
+        <p>Temp: ${changeTemperature(validData.temp, !toggle)}</p>
     </div>
     `
+
+    for (let i = 0; i < 24; i++) {
+        const iconPath = getWeatherIconPath(validData.hours[i].icon);
+
+        const image = document.createElement('img')
+        image.src = iconPath
+
+        hour.innerHTML += `
+        <div class='hourBox'>
+            ${formatTo12Hour(validData.hours[i].datetime)}
+            ${image.outerHTML}
+            ${changeTemperature(validData.hours[i].feelslike, !toggle)}
+        </div>
+        `
+    }
+
+    widgets.innerHTML = `
+    <div class='boxForWidgets'>
+        <div class='wind widget'>💨 ${changeUnitOfLength(validData.windspeed, !toggle)}</div>
+        <div class='humidity widget'>Humidity: ${validData.humidity}%</div>
+    </div>
+`
+
+    showWeatherData.appendChild(main)
+    showWeatherData.appendChild(hour)
+    showWeatherData.appendChild(widgets)
 }
 
-let giveTenDayForecast = (forecast) => {
+function formatTo12Hour(time) {
+    const [hours, minutes] = time.split(":").map(Number);
+
+    const period = hours >= 12 ? "PM" : "AM";
+
+    const hours12 = hours % 12 || 12
+
+    const formattedTime = `${hours12}:${String(minutes).padStart(2, '0')} ${period}`;
+
+    return formattedTime;
+}
+
+const giveTenDayForecast = (forecast) => {
     showForcast.innerHTML = ''
 
     for (let i = 1; i < 11; i++) {

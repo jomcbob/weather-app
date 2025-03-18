@@ -31,6 +31,13 @@ const fetchCity = (city, refresh) => {
                 humidity: response.currentConditions.humidity,
                 temp: response.days[0].temp,
                 windspeed: response.currentConditions.windspeed,
+                hours: response.days[0].hours.map(hour => {
+                    return {
+                        icon: hour.icon,
+                        feelslike: hour.feelslike,
+                        datetime: hour.datetime
+                    }
+                }),
                 days: response.days.map(day => {
                     return {
                         datetime: day.datetime,
@@ -40,7 +47,6 @@ const fetchCity = (city, refresh) => {
                     }
                 })
             }
-            
             refresh(data);
             moreData = data
         })

@@ -1,3 +1,7 @@
+html:root {
+  font-size: large;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -13,7 +17,7 @@ header {
   padding: 10px;
   justify-content: space-between;
   align-items: center;
-  font-size: xx-large;
+  font-size: 2rem;
   min-height: 7vh;
   position: sticky;
   top: 0;
@@ -24,18 +28,24 @@ header {
 input {
   border: 2px solid black;
   width: 30vw;
-  font-size: x-large;
+  font-size: 1.5rem;
   padding: 0 6px;
   border-radius: 2px;
 }
 
-input:focus {
-  border-style: none;
-  border: 2px solid green;
-}
-
 .deleteInputValue:active {
   background-color: red;
+}
+
+.hourBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon {
+  width: 7rem;
 }
 
 .container {
@@ -46,16 +56,20 @@ input:focus {
   overflow: hidden;
 }
 
+img {
+  height: 5rem;
+}
+
 .sideBar {
   padding: 20px;
-  font-size: small;
+  font-size: 1rem;
   overflow-y: auto;
   height: 100%;
 }
 
 .showWeatherData {
   padding: 20px;
-  font-size: xx-large;
+  font-size: 1.5rem;
   overflow-y: auto;
   height: 100%;
 }
@@ -80,8 +94,17 @@ input:focus {
   border: 1px solid black;
   border-radius: 10px;
   padding: 4px;
-  font-size: x-large;
-  margin-bottom: 1vh;
+  margin-bottom: .7rem;
+}
+
+.hour{
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  overflow: scroll;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px 0;
 }
 
 .boxForWidgets {
@@ -97,13 +120,14 @@ input:focus {
   border-radius: 20px;
   width: fit-content;
   margin-top: 20px;
-  margin-right: 20px;
+  margin-right: 20px; 
+  margin-bottom: 20px;
 }
 
 .boxForTenDays {
   background-color: rgba(105, 105, 105, 0.5);
   padding: 10px;
-  font-size: x-large;
+  font-size: 1.5rem;
   border-radius: 20px;
 }
 
@@ -125,7 +149,7 @@ button:hover {
 
 .credit button {
   padding: 10px;
-  font-size: large;
+  font-size: 1rem;
   border-radius: 10px;
 }
 
@@ -153,12 +177,12 @@ button:hover {
 
 .fetchCityButton {
   border-radius: 0 10px 10px 0;
-  font-size: xx-large;
+  font-size: 2rem;
 }
 
 .deleteInputValue {
   border-radius:  10px 0 0 10px ;
-  font-size: xx-large;
+  font-size: 2rem;
 }
 
 #clock {
