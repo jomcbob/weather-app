@@ -2,16 +2,17 @@ let showWeatherData = document.querySelector('.showWeatherData')
 let showForcast = document.querySelector('.nextTenDays')
 
 const refresh = (data) => {
-    giveData(data)
+    giveTodaysData(data)
     updateBackgroundImage(data)
     giveTenDayForecast(data)
 }
 
-let giveData = (validData) => {
+let giveTodaysData = (validData) => {
     showWeatherData.innerHTML = `
     <div class='data'> 
         <p class='city'>City: ${validData.address.toUpperCase()}</p>
         <p>Overview: ${validData.description}</p>
+        <p>Conditions: ${validData.conditions}</p>
         <p>Max temp: ${validData.days[0].tempmax}</p>
         <p>Min temp: ${validData.days[0].tempmin}</p>
         <p>Temp: ${validData.temp}</p>
@@ -63,12 +64,18 @@ async function updateBackgroundImage(data) {
 
     if (condition.includes('clear') || condition.includes('sunny') || condition.includes('fair')) {
         imagePath = 'sunny'
-    } else if (condition.includes('rain') || condition.includes('showers') || condition.includes('thunder') || condition.includes('drizzle')) {
+    } else if (condition.includes('rain') || condition.includes('showers') || condition.includes('drizzle')) {
         imagePath = 'rainy'
-    } else if (condition.includes('snow')) {
+    } else if (condition.includes('snow') || condition.includes('sleet') ) {
         imagePath = 'snowy'
-    } else if (condition.includes('cloud') || condition.includes('fog') || condition.includes('hail') || condition.includes('sleet') || condition.includes('overcast') || condition.includes('partly cloudy') || condition.includes('wind') || condition.includes('haze')) {
+    } else if (condition.includes('cloud') || condition.includes('hail') || condition.includes('partly cloudy') || condition.includes('wind')) {
         imagePath = 'cloudy'
+    } else if (condition.includes('thunder')){
+        imagePath = 'lightning'
+    } else if (condition.includes('fog') || condition.includes('haze')){
+        imagePath = 'fog'
+    } else if (condition.includes('overcast')){
+        imagePath = 'overcast'
     }
 
     try {
@@ -77,12 +84,11 @@ async function updateBackgroundImage(data) {
         document.body.style.backgroundSize = 'cover'
         document.body.style.backgroundPosition = 'center'
         document.body.style.height = '100vh'
-        document.body.style.backgroundAttachment = 'fixed'
+
     } catch (error) {
         console.error('Error loading background image:', error)
         document.body.style.backgroundImage = `url(./imgs/default.jpg)`
     }
 }
-
 
 export { refresh }

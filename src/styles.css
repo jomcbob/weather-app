@@ -4,7 +4,6 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  /* background-image: url(./imgs/sunny.jpg); */
 }
 
 header {
@@ -22,12 +21,19 @@ header {
 }
 
 input {
-  border-radius: 8px;
-  border: 1px solid black;
+  border: 2px solid black;
   width: 30vw;
   font-size: x-large;
   padding: 0 6px;
-  margin-left: 20vw;
+  border-radius: 2px;
+}
+
+input:focus {
+  border: 2px solid green;
+}
+
+.deleteInputValue:active {
+  background-color: red;
 }
 
 .container {
@@ -60,7 +66,10 @@ input {
 
 .inputs {
   display: flex;
-  gap: 20px;
+  justify-content: end;
+  background-color: gainsboro;
+  border-radius: 10px;
+  padding: 4px;
 }
 
 .dayForecast {
@@ -98,7 +107,6 @@ input {
 button {
   background-color: gainsboro;
   border: 0;
-  border-radius: 10px;
   color: black;
 }
 
@@ -115,6 +123,7 @@ button:hover {
 .credit button {
   padding: 10px;
   font-size: large;
+  border-radius: 10px;
 }
 
 #loadingBarContainer {
@@ -132,4 +141,32 @@ button:hover {
   height: 100%;
   width: 0;
   background-color: #4caf50;
+}
+
+.divs {
+  display: flex;
+  flex-direction: column;
+}
+
+.fetchCityButton {
+  border-radius: 0 10px 10px 0;
+  font-size: xx-large;
+}
+
+.deleteInputValue {
+  border-radius:  10px 0 0 10px ;
+  font-size: xx-large;
+}
+
+#clock {
+  border-radius: 50%; 
+  height: 8vh;  
+  width: 8vh; 
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  color: #444 ;
+  background-color: #ffffff;
+  font-weight: bold;
+  border: 3px dashed black;
 }
