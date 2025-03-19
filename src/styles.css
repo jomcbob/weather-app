@@ -131,6 +131,7 @@ img {
   padding: 10px;
   font-size: 1.5rem;
   border-radius: 20px;
+  margin-bottom: 5rem;
 }
 
 button {
@@ -229,10 +230,6 @@ button:hover {
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
 }
-
-
-
-
 
 .switch {
   position: relative;

@@ -24,7 +24,7 @@ function getWeatherIconPath(weatherCondition) {
         "wind": require("./icons/wind.svg")
     }
 
-     return iconMap[weatherCondition]// || require("./icons/thunder.svg"); // Default image
+     return iconMap[weatherCondition]
 }
 
 export { getWeatherIconPath }

@@ -1,4 +1,4 @@
-import { changeTemperature, changeUnitOfLength } from "./data"
+import { changeTemperature, changeUnitOfLength, formatTo12Hour, formatDate } from "./data"
 import { toggle, startClock, displayTimeDifference } from "./index"
 import { getWeatherIconPath } from "./icons"
 
@@ -12,6 +12,7 @@ const refresh = (data) => {
     startClock(data.timezone)
     displayTimeDifference(data.timezone)
 }
+
 
 const giveTodaysData = (validData) => {
     showWeatherData.innerHTML = ''
@@ -49,7 +50,7 @@ const giveTodaysData = (validData) => {
     }
 
     clocks.innerHTML = `
-    <div>
+            <div>
         <div>Time here</div>
         <div id="clock" class="clock">
             <div id="hand" class="hand"></div>
@@ -59,7 +60,7 @@ const giveTodaysData = (validData) => {
     <div>
         <div>Time there</div>
         <div id="clock" class="clock2">
-            <div id="hand" class="hand2"></div>
+            <div id="hand" class="hand"></div>
             <span id="time" class="time2"></span>
         </div>
         </div>
@@ -79,18 +80,6 @@ const giveTodaysData = (validData) => {
     showWeatherData.appendChild(widgets)
 }
 
-function formatTo12Hour(time) {
-    const [hours, minutes] = time.split(":").map(Number);
-
-    const period = hours >= 12 ? "PM" : "AM";
-
-    const hours12 = hours % 12 || 12
-
-    const formattedTime = `${hours12}:${String(minutes).padStart(2, '0')} ${period}`;
-
-    return formattedTime;
-}
-
 const giveTenDayForecast = (forecast) => {
     showForcast.innerHTML = ''
 
@@ -100,7 +89,7 @@ const giveTenDayForecast = (forecast) => {
         dayForcast.textContent = formatDate(forecast.days[i].datetime)
         showForcast.appendChild(dayForcast)
 
-        let isExpanded = false;
+        let isExpanded = false
 
         dayForcast.addEventListener('click', () => {
             if (isExpanded) {
@@ -109,19 +98,12 @@ const giveTenDayForecast = (forecast) => {
                 dayForcast.innerHTML = `
                     <p>${forecast.days[i].description}</p>
                     <p>Max temp: ${changeTemperature(forecast.days[i].tempmax, !toggle)}</p>
-                    <p>Min temp: ${changeTemperature(forecast.days[i].tempmin, !toggle)}°</p>
+                    <p>Min temp: ${changeTemperature(forecast.days[i].tempmin, !toggle)}</p>
                 `
             }
             isExpanded = !isExpanded
         })
     }
-}
-
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000);
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    return localDate.toLocaleDateString('en-US', options);
 }
 
 async function updateBackgroundImage(data) {
@@ -133,9 +115,9 @@ async function updateBackgroundImage(data) {
         imagePath = 'sunny'
     } else if (condition.includes('rain') || condition.includes('showers') || condition.includes('drizzle')) {
         imagePath = 'rainy'
-    } else if (condition.includes('snow') || condition.includes('sleet')) {
+    } else if (condition.includes('snow') || condition.includes('sleet') || condition.includes('hail')) {
         imagePath = 'snowy'
-    } else if (condition.includes('cloud') || condition.includes('hail') || condition.includes('partly cloudy') || condition.includes('wind')) {
+    } else if (condition.includes('cloud') || condition.includes('partly cloudy') || condition.includes('wind')) {
         imagePath = 'cloudy'
     } else if (condition.includes('thunder')) {
         imagePath = 'lightning'
@@ -143,7 +125,9 @@ async function updateBackgroundImage(data) {
         imagePath = 'fog'
     } else if (condition.includes('overcast')) {
         imagePath = 'overcast'
-    }
+    } else (
+        imagePath = 'else'
+    )
 
     try {
         const image = await import(`./imgs/${imagePath}.jpg`)
@@ -154,7 +138,7 @@ async function updateBackgroundImage(data) {
 
     } catch (error) {
         console.error('Error loading background image:', error)
-        document.body.style.backgroundImage = `url(./imgs/default.jpg)`
+        document.body.style.backgroundImage = `url(./imgs/else.jpg)`
     }
 }
 

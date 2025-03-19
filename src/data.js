@@ -1,8 +1,8 @@
-let moreData;
+let moreData
 const fetchCity = (city, refresh) => {
     document.getElementById('loadingBarContainer').style.display = 'block'
 
-    let loadingProgress = 0;
+    let loadingProgress = 0
 
     const loadingInterval = setInterval(() => {
         if (loadingProgress < 100) {
@@ -20,10 +20,10 @@ const fetchCity = (city, refresh) => {
             document.getElementById('loadingBar').style.width = '100%'
 
             setTimeout(() => {
-                document.getElementById('loadingBarContainer').style.display = 'none';
+                document.getElementById('loadingBarContainer').style.display = 'none'
             }, 500)
 
-            console.log(response);
+            // save only data I need in a nice array
             const data = {
                 address: response.address,
                 conditions: response.currentConditions.conditions,
@@ -48,7 +48,8 @@ const fetchCity = (city, refresh) => {
                     }
                 })
             }
-            refresh(data);
+            refresh(data)
+            // make copy of data so I can export it and use the info in other modules
             moreData = data
         })
         .catch(error => {
@@ -60,6 +61,7 @@ const fetchCity = (city, refresh) => {
         })
 }
 
+// read name if you want to know what it does
 const changeTemperature = (temperature, isCelsius) => {
     if (isCelsius) {
         return temperature + ' ℉'
@@ -68,14 +70,16 @@ const changeTemperature = (temperature, isCelsius) => {
     }
 }
 
+// read the last // if you want to know what this one does
 const changeUnitOfLength = (distance, isMiles) => {
     if (isMiles) {
-        return distance + ' mph';
+        return distance + ' mph'
     } else {
-        return Math.round(distance * 1.60934 * 100) / 100 + ' km/h';
+        return Math.round(distance * 1.60934 * 100) / 100 + ' km/h'
     }
 }
 
+// Ok Ok you get it I'll stop.
 function calculateTimeDifference(timeZone) {
     // Get the current local time
     const localDate = new Date()
@@ -93,6 +97,25 @@ function calculateTimeDifference(timeZone) {
     return { hours, minutes }
 }
 
+function formatTo12Hour(time) {
+    const [hours, minutes] = time.split(":").map(Number)
+
+    const period = hours >= 12 ? "PM" : "AM"
+
+    const hours12 = hours % 12 || 12
+
+    const formattedTime = `${hours12}:${String(minutes).padStart(2, '0')} ${period}`
+
+    return formattedTime
+}
+
+function formatDate(dateString) {
+    const date = new Date(dateString)
+    const localDate = new Date(date.getTime() + date.getTimezoneOffset() * 60000)
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
+    return localDate.toLocaleDateString('en-US', options)
+}
 
 
-export { fetchCity, changeTemperature, changeUnitOfLength, moreData, calculateTimeDifference }
+
+export { fetchCity, changeTemperature, changeUnitOfLength, moreData, calculateTimeDifference, formatTo12Hour, formatDate }
