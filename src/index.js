@@ -10,6 +10,11 @@ let deleteInputValue = document.querySelector('.deleteInputValue')
 let switchValue = document.querySelector('.slider')
 let toggle = false
 let toggleValue = document.querySelector('.toggleValue')
+let slider = document.querySelector('.checkbox')
+
+window.onload = () => {
+    cityInput.focus();
+}
 
 fetchCityButton.addEventListener('click', () => {
     fetchCity(cityInput.value, refresh)
@@ -19,6 +24,7 @@ switchValue.addEventListener('click', () => {
     toggle = !toggle
     if (toggle){
         toggleValue.textContent = '℃'
+        // slider.textContent = 'yo'
     } else {
         toggleValue.textContent = '℉'
     }
@@ -27,6 +33,7 @@ switchValue.addEventListener('click', () => {
 
 deleteInputValue.addEventListener('click', () => {
     cityInput.value = ''
+    cityInput.focus()
 })
 
 document.addEventListener('keydown', function(event) {

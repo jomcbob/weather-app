@@ -51,10 +51,11 @@ input {
 
 .container {
   display: grid;
-  grid-template-columns: 2fr 3fr;
+  grid-template-columns: 2fr 4fr; 
   grid-template-rows: 1fr;
   height: calc(100vh - 7vh);
   overflow: hidden;
+  gap: 0.5rem; 
 }
 
 img {
@@ -112,6 +113,7 @@ img {
 .boxForWidgets {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 5rem;
 }
 
 .widget {
@@ -123,7 +125,6 @@ img {
   width: fit-content;
   margin-top: 20px;
   margin-right: 20px; 
-  margin-bottom: 5rem;
 }
 
 .boxForTenDays {
@@ -145,7 +146,7 @@ button:hover {
 }
 
 .credit {
-  position: absolute;
+  position: fixed;
   bottom: 15px;
   right: 15px;
 }
@@ -200,6 +201,8 @@ button:hover {
   font-weight: bold;
   border: 3px dashed black;
   position: relative;
+  padding: .5rem;
+
 }
 
 #time {
@@ -229,6 +232,7 @@ button:hover {
   padding: 1rem;
   border-radius: 10px;
   background-color: rgba(255, 255, 255, 0.5);
+  flex-wrap: wrap;
 }
 
 .switch {
@@ -291,4 +295,27 @@ input:checked + .slider:before {
 a:hover {
   background-color: green;
   color: white;
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column-reverse;
+    min-height: 230vh;
+    overflow-y: scroll; 
+  }
+  
+  .sideBar {
+    padding: 20px;
+    font-size: 1rem;
+  }
+  
+  .showWeatherData {
+    padding: 20px;
+    font-size: 1.5rem;
+  }
+
+  header {
+    min-height: fit-content;
+  }
 }

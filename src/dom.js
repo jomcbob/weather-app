@@ -1,4 +1,4 @@
-import { changeTemperature, changeUnitOfLength, formatTo12Hour, formatDate } from "./data"
+import { changeTemperature, changeUnitOfLength, formatTo12Hour, formatDate, getDirection } from "./data"
 import { toggle, startClock, displayTimeDifference } from "./index"
 import { getWeatherIconPath } from "./icons"
 
@@ -69,8 +69,12 @@ const giveTodaysData = (validData) => {
 
     widgets.innerHTML = `
     <div class='boxForWidgets'>
-        <div class='wind widget'>💨 ${changeUnitOfLength(validData.windspeed, !toggle)}</div>
+        <div class='wind widget'>Wind speed ${changeUnitOfLength(validData.windspeed, !toggle)}</div>
+        <div class='windgust widget'>Wind gusts: ${changeUnitOfLength(validData.windgust, !toggle)}</div>
+        <div class='winddir widget'>Wind direction: ${getDirection(validData.winddir)}</div>
         <div class='humidity widget'>Humidity: ${validData.humidity}%</div>
+        <div class='visibility widget'>Visibility: ${validData.visibility}%</div>
+        <div class='feelslike widget'>Feels like: ${changeTemperature(validData.feelslike, !toggle)}</div>
     </div>
 `
 
@@ -83,7 +87,7 @@ const giveTodaysData = (validData) => {
 const giveTenDayForecast = (forecast) => {
     showForcast.innerHTML = ''
 
-    for (let i = 1; i < 11; i++) {
+    for (let i = 1; i < 15; i++) {
         let dayForcast = document.createElement('div')
         dayForcast.classList.add('dayForecast')
         dayForcast.textContent = formatDate(forecast.days[i].datetime)

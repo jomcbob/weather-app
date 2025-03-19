@@ -32,6 +32,10 @@ const fetchCity = (city, refresh) => {
                 temp: response.days[0].temp,
                 windspeed: response.currentConditions.windspeed,
                 timezone: response.timezone,
+                winddir: response.currentConditions.winddir,
+                visibility: response.currentConditions.visibility,
+                feelslike: response.currentConditions.feelslike,
+                windgust: response.currentConditions.windgust,
                 hours: response.days[0].hours.map(hour => {
                     return {
                         icon: hour.icon,
@@ -116,6 +120,32 @@ function formatDate(dateString) {
     return localDate.toLocaleDateString('en-US', options)
 }
 
+function getDirection(degree) {
+    if (degree < 0 || degree >= 360) {
+        return "Not found"
+    }
+
+    const directions = [
+        { range: [0, 22.5], direction: 'North' },
+        { range: [22.5, 67.5], direction: 'North-East' },
+        { range: [67.5, 112.5], direction: 'East' },
+        { range: [112.5, 157.5], direction: 'South-East' },
+        { range: [157.5, 202.5], direction: 'South' },
+        { range: [202.5, 247.5], direction: 'South-West' },
+        { range: [247.5, 292.5], direction: 'West' },
+        { range: [292.5, 337.5], direction: 'North-West' },
+        { range: [337.5, 360], direction: 'North' }
+    ]
+
+    for (let dir of directions) {
+        if (degree >= dir.range[0] && degree < dir.range[1]) {
+            return dir.direction
+        }
+    }
+
+    return "Not found"
+}
 
 
-export { fetchCity, changeTemperature, changeUnitOfLength, moreData, calculateTimeDifference, formatTo12Hour, formatDate }
+
+export { fetchCity, changeTemperature, changeUnitOfLength, moreData, calculateTimeDifference, formatTo12Hour, formatDate, getDirection }
