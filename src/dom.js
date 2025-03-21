@@ -34,20 +34,54 @@ const giveTodaysData = (validData) => {
     </div>
     `
 
+    const currentHour = new Date().getHours()
+    hour.innerHTML = ""
+    let futureHoursHTML = ""
+    let pastHoursHTML = ""
+
     for (let i = 0; i < 24; i++) {
-        const iconPath = getWeatherIconPath(validData.hours[i].icon);
-
-        const image = document.createElement('img')
-        image.src = iconPath
-
-        hour.innerHTML += `
-        <div class='hourBox'>
-            ${formatTo12Hour(validData.hours[i].datetime)}
-            ${image.outerHTML}
-            ${changeTemperature(validData.hours[i].feelslike, !toggle)}
-        </div>
+        const hourData = validData.hours[i];
+        const iconPath = getWeatherIconPath(hourData.icon);
+    
+        const image = document.createElement('img');
+        image.src = iconPath;
+    
+        const hourHTML = `
+            <div class='hourBox ${i < currentHour ? "pastHour" : ""}'>
+                ${formatTo12Hour(hourData.datetime)}
+                ${image.outerHTML}
+                ${i < currentHour ? "<s>" : ""}
+                    ${changeTemperature(hourData.feelslike, !toggle)}
+                ${i < currentHour ? "</s>" : ""}
+            </div>
         `
+    
+        if (i < currentHour) {
+            pastHoursHTML += hourHTML
+        } else {
+            futureHoursHTML += hourHTML
+        }
     }
+    
+    hour.innerHTML = pastHoursHTML + futureHoursHTML
+    
+    const minBoxes = 55
+    const hourBoxes = document.querySelectorAll('.hourBox')
+    
+    if (hourBoxes.length < minBoxes) {
+        let missingBoxes = minBoxes - hourBoxes.length
+        for (let i = 0; i < missingBoxes; i++) {
+            hour.innerHTML += `<div class='hourBox emptyBox'></div>`
+        }
+    }
+    
+    setTimeout(() => {
+        const firstHourBox = document.querySelector('.hourBox:not(.pastHour)')
+        if (firstHourBox) {
+            firstHourBox.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "start" })
+        }
+    }, 1000)
+    
 
     clocks.innerHTML = `
             <div>
@@ -73,7 +107,7 @@ const giveTodaysData = (validData) => {
         <div class='windgust widget'>Wind gusts: ${changeUnitOfLength(validData.windgust, !toggle)}</div>
         <div class='winddir widget'>Wind direction: ${getDirection(validData.winddir)}</div>
         <div class='humidity widget'>Humidity: ${validData.humidity}%</div>
-        <div class='visibility widget'>Visibility: ${validData.visibility}%</div>
+        <div class='visibility widget'>Visibility: ${changeUnitOfLength(validData.visibility, !toggle, true)}</div>
         <div class='feelslike widget'>Feels like: ${changeTemperature(validData.feelslike, !toggle)}</div>
     </div>
 `

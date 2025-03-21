@@ -10,7 +10,6 @@ let deleteInputValue = document.querySelector('.deleteInputValue')
 let switchValue = document.querySelector('.slider')
 let toggle = false
 let toggleValue = document.querySelector('.toggleValue')
-let slider = document.querySelector('.checkbox')
 
 window.onload = () => {
     cityInput.focus();
@@ -24,7 +23,6 @@ switchValue.addEventListener('click', () => {
     toggle = !toggle
     if (toggle){
         toggleValue.textContent = '℃'
-        // slider.textContent = 'yo'
     } else {
         toggleValue.textContent = '℉'
     }

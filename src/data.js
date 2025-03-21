@@ -65,7 +65,7 @@ const fetchCity = (city, refresh) => {
         })
 }
 
-// read name if you want to know what it does
+// read the name if you want to know what it does
 const changeTemperature = (temperature, isCelsius) => {
     if (isCelsius) {
         return temperature + ' ℉'
@@ -75,12 +75,18 @@ const changeTemperature = (temperature, isCelsius) => {
 }
 
 // read the last // if you want to know what this one does
-const changeUnitOfLength = (distance, isMiles) => {
-    if (isMiles) {
-        return distance + ' mph'
-    } else {
-        return Math.round(distance * 1.60934 * 100) / 100 + ' km/h'
+const changeUnitOfLength = (distance, isMiles, boolen) => {
+    if (typeof distance !== 'number' || isNaN(distance)) {
+        return ' No data'
     }
+
+    // if true is passed in as a part of the call this will trigger 
+    if (boolen) {
+        return isMiles ? `${distance} mi` : `${Math.round(distance * 1.60934 * 100) / 100} km`
+    }
+
+    // otherwise we just move on so this triggers
+    return isMiles ? `${distance} mph` : `${Math.round(distance * 1.60934 * 100) / 100} km/h`
 }
 
 // Ok Ok you get it I'll stop.
